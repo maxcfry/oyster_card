@@ -10,5 +10,13 @@ describe Oystercard do
     expect(subject.top_up).to eq(5)
   end
 
+  it 'test that limit cannot be breached' do
+    oyster = Oystercard.new
+    card_limit = Oystercard::CARD_LIMIT
+    18.times { oyster.top_up }
+    expect { oyster.top_up }.to raise_error("Cannot topup. Limit reached of #{card_limit}.")
+  end
+
+
 end
 
