@@ -32,11 +32,20 @@ CARD_LIMIT = 90
     @in_journey
   end
 
-  def touch_in 
-    @in_journey = true
+  def touch_in
+    if sufficient_funds?
+      @in_journey = true
+    else
+      "Insufficient funds. Touch in denied."
+    end
   end
 
   def touch_out 
     @in_journey = false
   end
+
+  def sufficient_funds?
+    @balance > 0
+  end
+
 end

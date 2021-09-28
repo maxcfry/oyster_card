@@ -32,6 +32,7 @@ describe Oystercard do
 
   it 'is in journey when touched in' do
     oyster = Oystercard.new
+    oyster.top_up
     oyster.touch_in
     expect(oyster.in_journey).to eq(true)
   end
@@ -42,5 +43,10 @@ describe Oystercard do
     oyster.touch_out
     expect(oyster.in_journey).to eq(false)
   end
+
+  it 'does not touch in if balance if less than 1' do
+    expect(subject.touch_in).to eq("Insufficient funds. Touch in denied.")
+  end 
+
 end
 
