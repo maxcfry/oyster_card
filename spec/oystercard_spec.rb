@@ -7,13 +7,13 @@ describe Oystercard do
   end
 
   it 'adds money to balance' do
-    expect(subject.top_up).to eq(5)
+    expect(subject.top_up).to eq(10)
   end
 
   it 'test that limit cannot be breached' do
     oyster = Oystercard.new
     card_limit = Oystercard::CARD_LIMIT
-    18.times { oyster.top_up }
+    9.times { oyster.top_up }
     expect { oyster.top_up }.to raise_error("Cannot topup. Limit reached of #{card_limit}.")
   end
 
@@ -39,6 +39,7 @@ describe Oystercard do
 
   it 'is not in journey when touched out' do 
     oyster = Oystercard.new
+    oyster.top_up
     oyster.touch_in
     oyster.touch_out
     expect(oyster.in_journey).to eq(false)
@@ -48,5 +49,11 @@ describe Oystercard do
     expect(subject.touch_in).to eq("Insufficient funds. Touch in denied.")
   end 
 
+  it 'deducts fee from card on touch out' do
+    oyster = Oystercard.new
+    oyster.top_up
+    oyster.touch_in 
+    expect{ oyster.touch_out}.to change{ oyster.balance }.by(-Oystercard::MINIMUM_CHARGE)
+  end
 end
 
