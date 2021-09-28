@@ -17,6 +17,30 @@ describe Oystercard do
     expect { oyster.top_up }.to raise_error("Cannot topup. Limit reached of #{card_limit}.")
   end
 
+  it 'deducts money from card' do
+    oyster = Oystercard.new(80)
+    expect(oyster.deduct).to eq(75)
+  end
 
+  it 'throws an error if money deducted from empty balance' do
+    expect { subject.deduct }.to raise_error("No money to deduct.")
+  end
+
+  it 'is initially not in journey' do 
+    expect(subject.in_journey).to eq(false)
+  end
+
+  it 'is in journey when touched in' do
+    oyster = Oystercard.new
+    oyster.touch_in
+    expect(oyster.in_journey).to eq(true)
+  end
+
+  it 'is not in journey when touched out' do 
+    oyster = Oystercard.new
+    oyster.touch_in
+    oyster.touch_out
+    expect(oyster.in_journey).to eq(false)
+  end
 end
 
