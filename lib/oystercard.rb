@@ -8,12 +8,11 @@ MIN_BALANCE = 1
 
   def initialize(balance = 10)
     @balance = balance
-    @full = MAX_BALANCE
     @journey = nil
   end
 
   def top_up(amount)
-    fail "Cannot topup. Limit reached of #{@full}." if @balance > MAX_BALANCE
+    fail "Cannot topup. Limit reached of #{MAX_BALANCE}." if @balance >= MAX_BALANCE
     @balance += amount
   end
 
@@ -38,9 +37,9 @@ MIN_BALANCE = 1
     @journey = false
   end
 
-  def sufficient_funds?
-    @balance > 0
-  end
+  # def sufficient_funds?
+  #   @balance > 0
+  # end
 
 
 end
