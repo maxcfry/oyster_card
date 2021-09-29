@@ -44,7 +44,11 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
 
-    
+    it 'does not touch in if balance to too low' do 
+      card = Oystercard.new
+      card.deduct(10)
+      expect{ card.touch_in }.to raise_error("Insufficient funds to travel")
+    end
 
   end 
   # it 'deducts money from card' do

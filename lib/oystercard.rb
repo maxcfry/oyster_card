@@ -12,7 +12,7 @@ MIN_BALANCE = 1
   end
 
   def top_up(amount)
-    fail "Cannot topup. Limit reached of #{MAX_BALANCE}." if @balance >= MAX_BALANCE
+    fail "Cannot topup. Limit reached of #{MAX_BALANCE}." if limit?
     @balance += amount
   end
 
@@ -29,6 +29,7 @@ MIN_BALANCE = 1
   end
 
   def touch_in
+    fail "Insufficient funds to travel" if no_funds?
     @journey = true
   end
 
@@ -41,5 +42,12 @@ MIN_BALANCE = 1
   #   @balance > 0
   # end
 
+  def limit?
+    @balance >= MAX_BALANCE
+  end
+
+  def no_funds?
+    @balance < MIN_BALANCE
+  end
 
 end
