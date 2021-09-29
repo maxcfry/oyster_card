@@ -1,12 +1,12 @@
 class Oystercard
 CARD_LIMIT = 90
-MINIMUM_CHARGE = 5
+MINIMUM_BALANCE = 1
   attr_reader :balance
   attr_reader :full
   attr_accessor :in_journey
   attr_reader :fee
 
-  def initialize(balance = 0, full = CARD_LIMIT, in_journey = false, fee = MINIMUM_CHARGE)
+  def initialize(balance = 0, full = CARD_LIMIT, in_journey = false, fee = MINIMUM_BALANCE
     @balance = balance
     @full = full
     @in_journey = in_journey
@@ -36,11 +36,8 @@ MINIMUM_CHARGE = 5
   end
 
   def touch_in
-    if sufficient_funds?
-      @in_journey = true
-    else
-      "Insufficient funds. Touch in denied."
-    end
+    fail "Insufficient funds. Touch in denied." if sufficient_funds? 
+    @in_journey = true
   end
 
   def touch_out 
@@ -49,9 +46,7 @@ MINIMUM_CHARGE = 5
   end
 
   def sufficient_funds?
-    @balance > 0
+    @balance >= 1
   end
-
-
 
 end
