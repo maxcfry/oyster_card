@@ -14,7 +14,7 @@ describe Oystercard do
 
   it 'test that limit cannot be breached' do
     card = Oystercard.new
-    card.top_up(79)
+    card.top_up(80)
     expect { card.top_up(5) }.to raise_error("Cannot topup. Limit reached of #{Oystercard::MAX_BALANCE}.")
   end
 

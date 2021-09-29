@@ -38,9 +38,9 @@ MIN_BALANCE = 1
     @journey = false
   end
 
-  # def sufficient_funds?
-  #   @balance > 0
-  # end
+  def sufficient_funds?
+    @balance > 0
+  end
 
 
 end
