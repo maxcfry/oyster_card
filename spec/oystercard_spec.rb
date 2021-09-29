@@ -2,19 +2,20 @@ require 'oystercard'
 
 describe Oystercard do
 
-  it 'has a balance of zero' do
-    expect(subject.balance).to eq(0)
+  it 'has a balance of ten' do
+    expect(subject.balance).to eq(10)
   end
 
+  it { is_expected.to respond_to(:top_up).with(1).argument }
+
   it 'adds money to balance' do
-    expect(subject.top_up).to eq(10)
+    expect(subject.top_up(10)).to eq(20)
   end
 
   it 'test that limit cannot be breached' do
-    oyster = Oystercard.new
-    card_limit = Oystercard::MAX_BALANCE
-    9.times { oyster.top_up }
-    expect { oyster.top_up }.to raise_error("Cannot topup. Limit reached of #{Oystercard::MAX_BALANCE}.")
+    card = Oystercard.new
+    card.top_up(79)
+    expect { card.top_up(5) }.to raise_error("Cannot topup. Limit reached of #{Oystercard::MAX_BALANCE}.")
   end
 
   it { is_expected.to respond_to(:deduct).with(1).argument }
@@ -24,6 +25,28 @@ describe Oystercard do
     expect{ subject.deduct(5)}.to change{ subject.balance }.by -5
   end
 
+  describe "#journey" do 
+   it {is_expected.to respond_to :touch_in} 
+   it {is_expected.to respond_to :touch_out} 
+   it {is_expected.to respond_to :in_journey} 
+
+   it 'is initially not in a journey' do
+    expect(subject).not_to be_in_journey
+   end
+  
+    it 'when touch_in is called in journey is true' do
+      subject.touch_in
+      expect(subject).to be_in_journey
+    end
+
+    it 'when touch_out is called in journey is false' do
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
+
+    
+
+  end 
   # it 'deducts money from card' do
   #   oyster = Oystercard.new(80)
   #   expect(oyster.touch_out).to eq(79)
