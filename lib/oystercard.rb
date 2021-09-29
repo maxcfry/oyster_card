@@ -34,7 +34,7 @@ MIN_BALANCE = 1
   end
 
   def touch_out 
-  # deduct
+    deduct(MIN_BALANCE)
     @journey = false
   end
 

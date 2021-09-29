@@ -50,6 +50,10 @@ describe Oystercard do
       expect{ card.touch_in }.to raise_error("Insufficient funds to travel")
     end
 
+    it 'deducts money from card upon touch_in' do
+      expect { subject.touch_out }.to change { subject.balance }.by(-1)
+    end
+
   end 
   # it 'deducts money from card' do
   #   oyster = Oystercard.new(80)
