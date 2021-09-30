@@ -6,7 +6,8 @@ describe OysterCard do
   let(:exit_station) { double :station }
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
-
+  let(:journey){ {entry: entry_station, exit: exit_station} }
+ 
   it 'has a balance of ten' do
     expect(subject.balance).to eq(10)
   end
@@ -74,6 +75,14 @@ describe OysterCard do
     it 'has an empty list of completed journeys' do
       expect(subject.journeys).to be_empty
     end
+
+    it 'stores entry and exit stations in journeys array' do
+      card = OysterCard.new
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect(card.journeys).to include journey
+    end
+    
   end 
   # it 'deducts money from card' do
   #   oyster = Oystercard.new(80)
