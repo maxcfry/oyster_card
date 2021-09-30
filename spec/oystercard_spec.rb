@@ -1,7 +1,7 @@
 require 'oystercard'
 
-describe Oystercard do
-
+describe OysterCard do
+  let(:station) { double :station }
   it 'has a balance of ten' do
     expect(subject.balance).to eq(10)
   end
@@ -13,15 +13,15 @@ describe Oystercard do
   end
 
   it 'test that limit cannot be breached' do
-    card = Oystercard.new
+    card = OysterCard.new
     card.top_up(80)
-    expect { card.top_up(5) }.to raise_error("Cannot topup. Limit reached of #{Oystercard::MAX_BALANCE}.")
+    expect { card.top_up(5) }.to raise_error("Cannot topup. Limit reached of #{OysterCard::MAX_BALANCE}.")
   end
 
   it { is_expected.to respond_to(:deduct).with(1).argument }
   
   it 'deducts an amount from the balance' do
-    oyster = Oystercard.new(80)
+    oyster = OysterCard.new(80)
     expect{ subject.deduct(5)}.to change{ subject.balance }.by -5
   end
 
@@ -35,7 +35,7 @@ describe Oystercard do
    end
   
     it 'when touch_in is called in journey is true' do
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
 
@@ -45,15 +45,20 @@ describe Oystercard do
     end
 
     it 'does not touch in if balance to too low' do 
-      card = Oystercard.new
+      card = OysterCard.new
       card.deduct(10)
-      expect{ card.touch_in }.to raise_error("Insufficient funds to travel")
+      expect{ card.touch_in(station) }.to raise_error("Insufficient funds to travel")
     end
 
     it 'deducts money from card upon touch_in' do
       expect { subject.touch_out }.to change { subject.balance }.by(-1)
     end
 
+    it 'store an entry station when touch_in' do
+      card = OysterCard.new
+      card.touch_in(station)
+      expect { subject.entry_station.to eq station }
+    end
   end 
   # it 'deducts money from card' do
   #   oyster = Oystercard.new(80)
