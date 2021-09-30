@@ -2,6 +2,11 @@ require 'oystercard'
 
 describe OysterCard do
   let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
+
   it 'has a balance of ten' do
     expect(subject.balance).to eq(10)
   end
@@ -39,7 +44,7 @@ describe OysterCard do
     end
 
     it 'when touch_out is called in journey is false' do
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject).not_to be_in_journey
     end
 
@@ -50,13 +55,24 @@ describe OysterCard do
     end
 
     it 'deducts money from card upon touch_in' do
-      expect { subject.touch_out }.to change { subject.balance }.by(-1)
+      expect { subject.touch_out(station) }.to change { subject.balance }.by(-1)
     end
 
     it 'store an entry station when touch_in' do
       card = OysterCard.new
       card.touch_in(station)
       expect { subject.entry_station.to eq station }
+    end
+
+    it 'store an exit station when touch_out' do
+      card = OysterCard.new
+      card.touch_in(entry_station)
+      card.touch_out(exit_station)
+      expect { subject.exit_station.to eq exit_station }
+    end
+
+    it 'has an empty list of completed journeys' do
+      expect(subject.journeys).to be_empty
     end
   end 
   # it 'deducts money from card' do

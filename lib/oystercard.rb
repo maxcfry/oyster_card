@@ -3,13 +3,17 @@ MAX_BALANCE = 90
 MIN_BALANCE = 1
   attr_reader :balance
   attr_reader :full
-  attr_accessor :in_journey
+  # attr_accessor :in_journey
   attr_reader :fee
   attr_reader :entry_station
+  attr_reader :exit_station
+  attr_reader :journeys
 
   def initialize(balance = 10)
     @balance = balance
     @entry_station = nil
+    @exit_station = nil
+    @journeys = []
   end
 
   def top_up(amount)
@@ -23,7 +27,6 @@ MIN_BALANCE = 1
 
   def in_journey?
     !!entry_station   
-
   end
 
   def deduct(amount)
@@ -32,12 +35,18 @@ MIN_BALANCE = 1
 
   def touch_in(station)
     fail "Insufficient funds to travel" if no_funds?
-    entry_station = station
+    @entry_station = station
+   
   end
 
-  def touch_out 
+  def touch_out(station)
     deduct(MIN_BALANCE)
+    @entry_station
+    @exit_station = station 
+    create_journeys(@entry_station, @exit_station)
     @entry_station = nil
+    @exit_station
+    
   end
 
   # def sufficient_funds?
@@ -52,4 +61,7 @@ MIN_BALANCE = 1
     @balance < MIN_BALANCE
   end
 
+  def create_journeys(entry_station, exit_station)
+   @journeys << {entry: @entry_station, exit: @exit_station}
+  end
 end
