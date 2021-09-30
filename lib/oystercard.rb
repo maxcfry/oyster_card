@@ -9,8 +9,7 @@ MIN_BALANCE = 1
 
   def initialize(balance = 10)
     @balance = balance
-    @journey = nil
-    @entry_station = entry_station
+    @entry_station = nil
   end
 
   def top_up(amount)
@@ -23,7 +22,8 @@ MIN_BALANCE = 1
   end
 
   def in_journey?
-    @journey == true
+    !!entry_station   
+
   end
 
   def deduct(amount)
@@ -32,14 +32,12 @@ MIN_BALANCE = 1
 
   def touch_in(station)
     fail "Insufficient funds to travel" if no_funds?
-    @journey = true
-   
-
+    entry_station = station
   end
 
   def touch_out 
     deduct(MIN_BALANCE)
-    @journey = false
+    @entry_station = nil
   end
 
   # def sufficient_funds?

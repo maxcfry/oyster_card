@@ -28,7 +28,6 @@ describe OysterCard do
   describe "#journey" do 
    it {is_expected.to respond_to :touch_in} 
    it {is_expected.to respond_to :touch_out} 
-   it {is_expected.to respond_to :in_journey} 
 
    it 'is initially not in a journey' do
     expect(subject).not_to be_in_journey
